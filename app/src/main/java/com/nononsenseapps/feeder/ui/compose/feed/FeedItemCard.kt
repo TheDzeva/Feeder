@@ -279,7 +279,8 @@ fun FeedItemCard(
                                         ).size(Size.ORIGINAL)
                                         .build(),
                                 placeholder = rememberTintedVectorPainter(Icons.Outlined.Terrain),
-                                error = rememberTintedVectorPainter(Icons.Outlined.ErrorOutline),
+                                //error = rememberTintedVectorPainter(Icons.Outlined.ErrorOutline),
+                                error = null,
                                 contentDescription = stringResource(id = R.string.article_image),
                                 contentScale = ContentScale.FillWidth,
                                 alignment = Alignment.Center,
