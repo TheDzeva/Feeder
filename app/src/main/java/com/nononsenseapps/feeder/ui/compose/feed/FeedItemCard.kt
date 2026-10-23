@@ -1,6 +1,8 @@
 package com.nononsenseapps.feeder.ui.compose.feed
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -264,7 +266,7 @@ fun FeedItemCard(
                                 } else {
                                     Modifier.fillMaxWidth()
                                 }
-
+                            val cornerShape = RoundedCornerShape(20.dp)
                             AsyncImage(
                                 model =
                                     ImageRequest
@@ -283,8 +285,9 @@ fun FeedItemCard(
                                 alignment = Alignment.Center,
                                 modifier =
                                     imageModifier
-                                        .clip(RoundedCornerShape(20.dp))
+                                        .clip(cornerShape)
                                         .background(MaterialTheme.colorScheme.surfaceVariant)
+                                        .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant), shape = cornerShape)
                                         .safeSemantics {
                                             testTag = "card_image"
                                         },

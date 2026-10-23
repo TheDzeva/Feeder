@@ -6,9 +6,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.indication
@@ -453,6 +455,7 @@ fun ReaderView(
                                         remember(pixelDensity) {
                                             RestrainedCropScaling(pixelDensity)
                                         }
+                                    val cornerShape = RoundedCornerShape(20.dp)
                                     AsyncImage(
                                         model = ImageRequest.Builder(LocalContext.current)
                                             .data(image.url)
@@ -470,7 +473,8 @@ fun ReaderView(
                                             .run {
                                                 dimens.imageAspectRatioInReader?.let { ratio -> aspectRatio(ratio) } ?: this
                                             }
-                                            .clip(RoundedCornerShape(20.dp)),
+                                            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant), shape = cornerShape)
+                                            .clip(cornerShape)
                                     )
                                 }
                             }
