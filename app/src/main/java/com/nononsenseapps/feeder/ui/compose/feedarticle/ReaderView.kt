@@ -57,8 +57,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -81,7 +81,6 @@ import com.nononsenseapps.feeder.archmodel.Enclosure
 import com.nononsenseapps.feeder.archmodel.isImage
 import com.nononsenseapps.feeder.model.MediaImage
 import com.nononsenseapps.feeder.model.ThumbnailImage
-import com.nononsenseapps.feeder.ui.compose.coil.RestrainedCropScaling
 import com.nononsenseapps.feeder.ui.compose.coil.rememberTintedVectorPainter
 import com.nononsenseapps.feeder.ui.compose.components.safeSemantics
 import com.nononsenseapps.feeder.ui.compose.text.WithBidiDeterminedLayoutDirection
@@ -188,11 +187,11 @@ fun ReaderView(
                                         .size(50.dp)
                                         .clip(CircleShape)
                                         .background(MaterialTheme.colorScheme.primaryContainer),
-                            ) {                  val initial = feedTitle.trim().take(2)
+                            ) {                  val initial = feedTitle.trim().take(1).uppercase()
                                 if (initial.isNotBlank()) {
                                     Text(
                                         text = initial,
-                                        style = MaterialTheme.typography.labelLarge,
+                                        style = MaterialTheme.typography.headlineLarge,
                                         fontWeight = FontWeight.Bold,
 
                                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -450,11 +449,7 @@ fun ReaderView(
                             ) {
                                 WithTooltipIfNotBlank(tooltip = stringResource(id = R.string.article_image)) {
                                     val maxImageWidth by rememberMaxImageWidth()
-                                    val pixelDensity = LocalDensity.current.density
-                                    val contentScale =
-                                        remember(pixelDensity) {
-                                            RestrainedCropScaling(pixelDensity)
-                                        }
+
                                     val cornerShape = RoundedCornerShape(20.dp)
                                     AsyncImage(
                                         model = ImageRequest.Builder(LocalContext.current)
@@ -466,8 +461,8 @@ fun ReaderView(
                                         contentDescription = enclosure.name,
                                         placeholder = rememberTintedVectorPainter(Icons.Outlined.Terrain),
                                         error = rememberTintedVectorPainter(Icons.Outlined.ErrorOutline),
-                                        contentScale = contentScale,
                                         alignment = Alignment.Center,
+                                        contentScale = ContentScale.Fit,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .run {

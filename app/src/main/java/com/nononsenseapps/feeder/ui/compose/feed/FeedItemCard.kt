@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Feed
 import androidx.compose.material.icons.filled.Grade
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Grade
 import androidx.compose.material.icons.outlined.Terrain
 import androidx.compose.material.icons.outlined.Timelapse
@@ -44,7 +42,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -58,8 +55,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import coil3.size.Precision
-import coil3.size.Scale
 import coil3.size.Size
 import com.nononsenseapps.feeder.R
 import com.nononsenseapps.feeder.db.room.ID_UNSET
@@ -124,52 +119,26 @@ fun FeedItemCard(
                         contentAlignment = Alignment.Center,
                         modifier =
                             Modifier
-                                .size(32.dp)
+                                .size(50.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.primaryContainer),
-                    ) {
-                        if (item.feedImageUrl != null) {
-                            val pixels =
-                                with(LocalDensity.current) {
-                                    32.dp.roundToPx()
-                                }
-                            AsyncImage(
-                                model =
-                                    ImageRequest
-                                        .Builder(LocalContext.current)
-                                        .data(item.feedImageUrl.toString())
-                                        .scale(Scale.FIT)
-                                        .size(pixels)
-                                        .precision(Precision.INEXACT)
-                                        .build(),
-                                placeholder = rememberTintedVectorPainter(Icons.Outlined.Terrain),
-                                error = rememberTintedVectorPainter(Icons.Outlined.ErrorOutline),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier =
-                                    Modifier
-                                        .fillMaxSize()
-                                        .clip(CircleShape),
+                    ) {                  val initial = item.feedTitle.trim().take(1).uppercase()
+                        if (initial.isNotBlank()) {
+                            Text(
+                                text = initial,
+                                style = MaterialTheme.typography.headlineLarge,
+                                fontWeight = FontWeight.Bold,
+
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                             )
                         } else {
-                            val initial = item.feedTitle.trim().take(2)
-                            if (initial.isNotBlank()) {
-                                Text(
-                                    text = initial,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Outlined.Terrain,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp),
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            }
-                        }
-                    }
+                            Icon(
+                                imageVector = Icons.Outlined.Terrain,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        }}
 
                     Column(
                         modifier = Modifier.weight(1f),
