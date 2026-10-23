@@ -8,11 +8,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,10 +26,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BookmarkAdded
 import androidx.compose.material.icons.outlined.BookmarkBorder
@@ -60,6 +65,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -167,55 +175,101 @@ fun ReaderView(
                                     }
                                 },
                     ) {
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),){
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier =
+                                    Modifier
+                                        .size(50.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primaryContainer),
+                            ) {                  val initial = feedTitle.trim().take(2)
+                                if (initial.isNotBlank()) {
+                                    Text(
+                                        text = initial,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        fontWeight = FontWeight.Bold,
+
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Terrain,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    )
+                                }}
+                        ProvideScaledText(
+                            style =
+                                MaterialTheme.typography.titleMedium.merge(
+                                    LinkTextStyle(),
+                                ),
+                        ) { Column(
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.weight(1f),
+                        ) {
+                            WithBidiDeterminedLayoutDirection(paragraph = feedTitle) {Text(
+                                text = feedTitle,
+                                style = LocalTextStyle.current.copy(
+                                    textDecoration = TextDecoration.None,
+                                    fontWeight = FontWeight.ExtraBold,
+                                ),
+                                modifier = Modifier
+                                    .width(dimens.maxReaderWidth)
+                                    .clearAndSetSemantics {
+                                        contentDescription = feedTitle
+                                    }
+                                    .clickable(
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = null
+                                    ) {
+                                        onFeedTitleClick()
+                                    }
+                            )
+                            }
+                            if (authorDate != null) {
+                                ProvideScaledText(style = MaterialTheme.typography.titleMedium) {
+                                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                        WithBidiDeterminedLayoutDirection(paragraph = authorDate) {
+                                            val interactionSource = remember { MutableInteractionSource() }
+                                            Text(
+                                                text = authorDate,
+                                                style = LocalTextStyle.current.copy(
+                                                    textDecoration = TextDecoration.None,
+                                                    fontWeight = FontWeight.Thin,
+                                                ),
+                                                modifier =
+                                                    Modifier
+                                                        .width(dimens.maxReaderWidth)
+                                                        .indication(interactionSource, null)
+                                                        .focusableInNonTouchMode(interactionSource = interactionSource)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        }
+                    }
+
                         if (articleTitle.isNotBlank()) {
                             WithBidiDeterminedLayoutDirection(paragraph = articleTitle) {
                                 val interactionSource = remember { MutableInteractionSource() }
+
+
                                 Text(
                                     text = articleTitle,
-                                    style = MaterialTheme.typography.headlineLarge,
+                                    style = MaterialTheme.typography.headlineMedium,
                                     modifier =
                                         Modifier
                                             .indication(interactionSource, LocalIndication.current)
                                             .focusableInNonTouchMode(interactionSource = interactionSource)
                                             .width(dimens.maxReaderWidth),
                                 )
-                            }
-                        }
-                        ProvideScaledText(
-                            style =
-                                MaterialTheme.typography.titleMedium.merge(
-                                    LinkTextStyle(),
-                                ),
-                        ) {
-                            WithBidiDeterminedLayoutDirection(paragraph = feedTitle) {
-                                Text(
-                                    text = feedTitle,
-                                    modifier =
-                                        Modifier
-                                            .width(dimens.maxReaderWidth)
-                                            .clearAndSetSemantics {
-                                                contentDescription = feedTitle
-                                            }.clickable {
-                                                onFeedTitleClick()
-                                            },
-                                )
-                            }
-                        }
-                        if (authorDate != null) {
-                            ProvideScaledText(style = MaterialTheme.typography.titleMedium) {
-                                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                                    WithBidiDeterminedLayoutDirection(paragraph = authorDate) {
-                                        val interactionSource = remember { MutableInteractionSource() }
-                                        Text(
-                                            text = authorDate,
-                                            modifier =
-                                                Modifier
-                                                    .width(dimens.maxReaderWidth)
-                                                    .indication(interactionSource, LocalIndication.current)
-                                                    .focusableInNonTouchMode(interactionSource = interactionSource),
-                                        )
-                                    }
-                                }
                             }
                         }
                         Row(
@@ -273,7 +327,9 @@ fun ReaderView(
                                         },
                                     onClick = onMarkAsUnread,
                                     label = {
-                                        Text(stringResource(R.string.mark_as_unread))
+                                        Text(stringResource(R.string.mark_as_unread),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,)
                                     },
                                 )
                             }
@@ -398,30 +454,23 @@ fun ReaderView(
                                             RestrainedCropScaling(pixelDensity)
                                         }
                                     AsyncImage(
-                                        model =
-                                            ImageRequest
-                                                .Builder(LocalContext.current)
-                                                .data(image.url)
-                                                .scale(Scale.FIT)
-                                                .size(imageWidth.coerceAtMost(maxImageWidth))
-                                                .precision(Precision.INEXACT)
-                                                .build(),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(image.url)
+                                            .scale(Scale.FIT)
+                                            .size(imageWidth.coerceAtMost(maxImageWidth))
+                                            .precision(Precision.INEXACT)
+                                            .build(),
                                         contentDescription = enclosure.name,
-                                        placeholder =
-                                            rememberTintedVectorPainter(
-                                                Icons.Outlined.Terrain,
-                                            ),
+                                        placeholder = rememberTintedVectorPainter(Icons.Outlined.Terrain),
                                         error = rememberTintedVectorPainter(Icons.Outlined.ErrorOutline),
                                         contentScale = contentScale,
                                         alignment = Alignment.Center,
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .run {
-                                                    dimens.imageAspectRatioInReader?.let { ratio ->
-                                                        aspectRatio(ratio)
-                                                    } ?: this
-                                                },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .run {
+                                                dimens.imageAspectRatioInReader?.let { ratio -> aspectRatio(ratio) } ?: this
+                                            }
+                                            .clip(RoundedCornerShape(20.dp)),
                                     )
                                 }
                             }
