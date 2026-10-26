@@ -98,30 +98,71 @@ fun FeedItemCard(
                     .requiredHeightIn(min = minimumTouchSize)
                     .alpha(if (!item.unread) 0.75f else 1.0f),
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.wrapContentHeight()
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier =
+                    Modifier
+                        .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
             ) {
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    WithBidiDeterminedLayoutDirection(paragraph = item.feedTitle) {
-                        Text(
-                            text = item.feedTitle,
-                            style = FeedListItemFeedTitleStyle(),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
 
+
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.wrapContentHeight()
+                ) {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        WithBidiDeterminedLayoutDirection(paragraph = item.feedTitle) {
+                            Text(
+                                text = item.feedTitle,
+                                style = FeedListItemFeedTitleStyle(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+
+                                )
+                        }
+                        WithBidiDeterminedLayoutDirection(paragraph = item.pubDate) {
+                            Text(
+                                text = item.pubDate,
+                                style = FeedListItemDateStyle(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Clip,
+                                modifier = Modifier,
                             )
-                    }
-                    WithBidiDeterminedLayoutDirection(paragraph = item.pubDate) {
-                        Text(
-                            text = item.pubDate,
-                            style = FeedListItemDateStyle(),
-                            maxLines = 1,
-                            overflow = TextOverflow.Clip,
-                            modifier = Modifier,
-                        )
+                        }
                     }
                 }
+                FeedItemEitherIndicator(
+                    bookmarked = item.bookmarked && bookmarkIndicator,
+                    itemImage = null,
+                    feedImageUrl = item.feedImageUrl?.toString(),
+                    size = 16.dp,
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier =
+                    Modifier
+                        .padding(vertical = 8.dp, horizontal = 8.dp),
+            ) {
+
+                FeedItemText(
+                    item = item,
+                    onOpenFeedItemInReader = onOpenFeedItemInReader,
+                    onOpenFeedItemInCustomTab = onOpenFeedItemInCustomTab,
+                    onOpenFeedItemInBrowser = onOpenFeedItemInBrowser,
+                    onMarkAboveAsRead = onMarkAboveAsRead,
+                    onMarkBelowAsRead = onMarkBelowAsRead,
+                    onShareItem = onShareItem,
+                    onToggleBookmark = onToggleBookmark,
+                    dropDownMenuExpanded = dropDownMenuExpanded,
+                    onDismissDropdown = onDismissDropdown,
+                    maxLines = maxLines,
+                    showOnlyTitle = showOnlyTitle,
+                    showReadingTime = showReadingTime,
+                )
             }
             if (showThumbnail) {
                 item.image?.let { image ->
@@ -169,35 +210,6 @@ fun FeedItemCard(
                         }
                     }
                 }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier =
-                    Modifier
-                        .padding(vertical = 8.dp, horizontal = 8.dp),
-            ) {
-                FeedItemEitherIndicator(
-                    bookmarked = item.bookmarked && bookmarkIndicator,
-                    itemImage = null,
-                    feedImageUrl = item.feedImageUrl?.toString(),
-                    size = 16.dp,
-                )
-                FeedItemText(
-                    item = item,
-                    onOpenFeedItemInReader = onOpenFeedItemInReader,
-                    onOpenFeedItemInCustomTab = onOpenFeedItemInCustomTab,
-                    onOpenFeedItemInBrowser = onOpenFeedItemInBrowser,
-                    onMarkAboveAsRead = onMarkAboveAsRead,
-                    onMarkBelowAsRead = onMarkBelowAsRead,
-                    onShareItem = onShareItem,
-                    onToggleBookmark = onToggleBookmark,
-                    dropDownMenuExpanded = dropDownMenuExpanded,
-                    onDismissDropdown = onDismissDropdown,
-                    maxLines = maxLines,
-                    showOnlyTitle = showOnlyTitle,
-                    showReadingTime = showReadingTime,
-                )
             }
         }
     }
