@@ -98,6 +98,31 @@ fun FeedItemCard(
                     .requiredHeightIn(min = minimumTouchSize)
                     .alpha(if (!item.unread) 0.75f else 1.0f),
         ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.wrapContentHeight()
+            ) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    WithBidiDeterminedLayoutDirection(paragraph = item.feedTitle) {
+                        Text(
+                            text = item.feedTitle,
+                            style = FeedListItemFeedTitleStyle(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+
+                            )
+                    }
+                    WithBidiDeterminedLayoutDirection(paragraph = item.pubDate) {
+                        Text(
+                            text = item.pubDate,
+                            style = FeedListItemDateStyle(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Clip,
+                            modifier = Modifier,
+                        )
+                    }
+                }
+            }
             if (showThumbnail) {
                 item.image?.let { image ->
                     // Don't render known super small images. Null is OK
@@ -232,33 +257,7 @@ fun RowScope.FeedItemText(
                         .fillMaxWidth(),
             )
         }
-        // Want the dropdown to center on the middle text row
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.wrapContentHeight()
-        ) {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                WithBidiDeterminedLayoutDirection(paragraph = item.feedTitle) {
-                    Text(
-                        text = item.feedTitle,
-                        style = FeedListItemFeedTitleStyle(),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-
-                    )
-                }
-                WithBidiDeterminedLayoutDirection(paragraph = item.pubDate) {
-                    Text(
-                        text = item.pubDate,
-                        style = FeedListItemDateStyle(),
-                        maxLines = 1,
-                        overflow = TextOverflow.Clip,
-                        modifier = Modifier,
-                    )
-                }
-            }
-        }
         DropdownMenu(
             expanded = dropDownMenuExpanded,
             onDismissRequest = onDismissDropdown,
