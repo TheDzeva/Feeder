@@ -1,4 +1,3 @@
-
 pluginManagement {
     repositories {
         google()
@@ -18,8 +17,9 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
+            // Mitigates Bouncy Castle vulnerability (Fixed in 1.85+)
             version("bouncycastle", "1.86")
-            library("bcprov.jdk18on", "org.bouncycastle", "bcprov-jdk18on")
+            library("bcprov-jdk18on", "org.bouncycastle", "bcprov-jdk18on")
                 .versionRef("bouncycastle")
 
             library("jdom2", "org.jdom", "jdom2")
