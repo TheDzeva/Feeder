@@ -22,3 +22,9 @@ allprojects {
         options.encoding = "UTF-8"
     }
 }
+
+// build.gradle.kts
+dependencies {
+    implementation("org.bouncycastle:bcprov-jdk18on:1.86")
+}
+
