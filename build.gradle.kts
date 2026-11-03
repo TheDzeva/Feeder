@@ -23,10 +23,10 @@ allprojects {
     }
 }
 
-// build.gradle.kts
+val bouncyCastleVersion = "1.85"
+
 dependencies {
-    implementation("org.bouncycastle:bcprov-jdk18on:1.86")
-    implementation("com.ibm.icu:icu4j:79.1")
-    implementation("org.jdom:jdom2:2.0.6.1")
+    implementation("org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion")
+    implementation("org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion")
 }
 
