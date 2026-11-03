@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+implementation 'org.bouncycastle:bcprov-jdk18on:1.85'
 
 buildscript {
     repositories {
