@@ -23,10 +23,10 @@ allprojects {
     }
 }
 
-val bouncyCastleVersion = "1.85"
+val bouncyCastleLtsVersion = "2.73.12"
 
 dependencies {
-    implementation("org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion")
-    implementation("org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion")
+    implementation("org.bouncycastle:bcprov-lts8on:$bouncyCastleLtsVersion")
+    implementation("org.bouncycastle:bcpkix-lts8on:$bouncyCastleLtsVersion")
 }
 
