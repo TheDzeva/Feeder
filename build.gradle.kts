@@ -26,6 +26,7 @@ allprojects {
 // build.gradle.kts
 dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:1.86")
-    implementation 'com.ibm.icu:icu4j:79.1'
+    implementation("com.ibm.icu:icu4j:79.1")
+    implementation("org.jdom:jdom2:2.0.6.1")
 }
 
