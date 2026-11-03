@@ -239,6 +239,7 @@ ktlint {
 }
 
 dependencies {
+     implementation(libs.logback.core)
     implementation(libs.jdom2)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
