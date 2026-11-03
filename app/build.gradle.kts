@@ -239,6 +239,7 @@ ktlint {
 }
 
 dependencies {
+    implementation(libs.jdom2)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
     ktlintRuleset(libs.ktlint.compose)
