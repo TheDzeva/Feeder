@@ -4,7 +4,7 @@
 kotlin = "2.4.21"
 ksp = "2.3.12"
 kotlinxSerialization = "1.11.0"
-androidPlugin = "9.4.1"
+androidPlugin = "9.5.0"
 # And SDK version is highly coupled to androidPlugin too
 compileSdk = "37"
 # BEGIN These should be upgraded in unison. See https://square.github.io/okhttp/changelogs/changelog_4x/
